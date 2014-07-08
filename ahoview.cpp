@@ -8,23 +8,24 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QKeyEvent>
+#include <QStatusBar>
 //end my include
 
 ahoview::ahoview(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::ahoview)
+    QMainWindow(parent), ui(new Ui::ahoview), qimglabel(new QLabel)
 {
     ui->setupUi(this);
 
-    qimglabel=new QLabel;
     setCentralWidget(qimglabel);
+    qimglabel->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
 
     picRescaleMode=0;
     windowSizeMode=0;
 
-    //std::vector<picaxiv *> allaxiv (0);
-
     createActions();
     createMenus();
+    qstatus=new QLabel(tr("Initialized"));
+    createStatusbar();
 }
 
 ahoview::~ahoview() {
@@ -53,6 +54,7 @@ int ahoview::changeaxiv(int offset) {
     if (!(*tmp)->showable()) {return 1;}
     else {
         axiv_it=tmp;
+        changeStatusbar((*axiv_it)->name);
         return 0;
     }
     return 1;
@@ -192,7 +194,11 @@ void ahoview::createMenus() {
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
+    helpMenu = new QMenu(tr("&Help"), this);
+    helpMenu->addAction(aboutQtAct);
+
     menuBar()->addMenu(fileMenu);
+    menuBar()->addMenu(helpMenu);
 }
 
 void ahoview::createActions() {
@@ -211,8 +217,21 @@ void ahoview::createActions() {
     exitAct = new QAction(tr("E&xit"), this);
     exitAct->setShortcut(tr("Ctrl+Q"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+
+    aboutQtAct = new QAction(tr("About &Qt"), this);
+    connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
+void ahoview::createStatusbar() {
+    statusBar()->addWidget(qstatus);
+}
+
+void ahoview::changeStatusbar(QString newstatus) {
+    statusBar()->removeWidget(qstatus);
+    delete qstatus;
+    qstatus=new QLabel(newstatus);
+    statusBar()->addWidget(qstatus);
+}
 //        QMessageBox msgBox;
 //        msgBox.setText("The document has been +1.");
 //        msgBox.exec();

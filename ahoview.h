@@ -42,10 +42,15 @@ private:
     void plot();
     void clearplot();
     int changeaxiv(int);
-    int closeaxiv(int);
     //return 0 if currentaxiv is changed.
+    int closeaxiv(int);
+
     void createActions();
     void createMenus();
+    void createStatusbar();
+    //use qstatus
+    void changeStatusbar(QString);
+    //change qstatus
 
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
@@ -55,13 +60,16 @@ private:
 
     Ui::ahoview *ui;
     QLabel *qimglabel;
+    QLabel *qstatus;
 
     QAction *openfileAct;
     QAction *opendirAct;
     QAction *closeAct;
     QAction *exitAct;
+    QAction *aboutQtAct;
 
     QMenu *fileMenu;
+    QMenu *helpMenu;
 
 };
 
