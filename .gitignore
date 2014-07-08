@@ -1,0 +1,8 @@
+Makefile
+Makefile.Debug
+Makefile.Release
+*.exe
+*.obj
+*.manifest
+release/moc_ahoview.cpp
+ahoview.pro.user
