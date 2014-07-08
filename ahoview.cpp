@@ -18,13 +18,14 @@ ahoview::ahoview(QWidget *parent) :
 
     setCentralWidget(qimglabel);
     qimglabel->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
+    qimglabel->setAlignment(Qt::AlignCenter);
 
     picRescaleMode=0;
     windowSizeMode=0;
 
     createActions();
     createMenus();
-    qstatus=new QLabel(tr("Initialized"));
+    qstatus=new QLabel(tr("initialized"));
     createStatusbar();
 }
 
@@ -54,7 +55,6 @@ int ahoview::changeaxiv(int offset) {
     if (!(*tmp)->showable()) {return 1;}
     else {
         axiv_it=tmp;
-        changeStatusbar((*axiv_it)->name);
         return 0;
     }
     return 1;
@@ -73,6 +73,7 @@ int ahoview::closeaxiv(int offset) {
         //size=1.
         delete *axiv_it;
         axiv_it=allaxiv.erase(axiv_it);
+        changeStatusbar("no axiv");
         clearplot();
         return 0;
     }
@@ -161,7 +162,11 @@ void ahoview::keyPressEvent(QKeyEvent *event) {
         }
     }
     else if(event->key() == Qt::Key_Escape) {
-        clearplot();
+        if (qimglabel->isHidden()) {
+            qimglabel->show();
+        } else {
+            qimglabel->hide();
+        }
     } else {
         QWidget::keyPressEvent(event);
     }
@@ -176,9 +181,8 @@ void ahoview::plot() {
     if (!(*axiv_it)->showable()) {return;}
     (*axiv_it)->scale(0,qimglabel->size(),picRescaleMode);
     if((*(*axiv_it)->ptr())->status!=2) {
-        qimglabel->setAlignment(Qt::AlignHCenter);
-        qimglabel->setAlignment(Qt::AlignVCenter);
         qimglabel->setPixmap((*(*axiv_it)->ptr())->scaled);
+        changeStatusbar((*((*axiv_it)->ptr()))->name);
     }
 }
 

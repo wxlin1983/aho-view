@@ -24,7 +24,6 @@ picaxiv::picaxiv(QString fn)
         } else if (info.isFile()) {
             axiv=std::vector<pic *> (1);
             axiv[0]=new pic(info.absoluteFilePath());
-            name="";
             pic_it=axiv.begin();
             return;
         } else {}
