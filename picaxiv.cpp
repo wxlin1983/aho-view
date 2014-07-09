@@ -88,5 +88,15 @@ std::vector<pic *>::iterator picaxiv::mv(int m) {
         return pic_it;
     }
     pic_it=offset_it(m);
+    if((*pic_it)->load()==1) {
+        return pic_it;
+    }
+    do {
+        pic_it=axiv.erase(pic_it);
+        if (axiv.empty()) {return pic_it;}
+        //this should never happen!
+        //always check showable before using mv.
+        if (pic_it==axiv.end()) {pic_it=axiv.begin();}
+    } while ((*pic_it)->load()!=1);
     return pic_it;
 }

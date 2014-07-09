@@ -17,6 +17,7 @@ ahoview::ahoview(QWidget *parent) :
     ui->setupUi(this);
 
     setCentralWidget(qimglabel);
+
     qimglabel->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     qimglabel->setAlignment(Qt::AlignCenter);
 
@@ -25,6 +26,7 @@ ahoview::ahoview(QWidget *parent) :
 
     createActions();
     createMenus();
+
     qstatus=new QLabel(tr("initialized"));
     createStatusbar();
 }

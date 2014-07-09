@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+INCLUDEPATH += "C:/Users/Wei-Hsun Lin/My Library/zlib-1.2.8"
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ahoview

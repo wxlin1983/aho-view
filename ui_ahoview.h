@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -25,6 +26,7 @@ class Ui_ahoview
 public:
     QWidget *centralWidget;
     QMenuBar *menuBar;
+    QStatusBar *statusBar;
 
     void setupUi(QMainWindow *ahoview)
     {
@@ -38,6 +40,9 @@ public:
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 800, 21));
         ahoview->setMenuBar(menuBar);
+        statusBar = new QStatusBar(ahoview);
+        statusBar->setObjectName(QStringLiteral("statusBar"));
+        ahoview->setStatusBar(statusBar);
 
         retranslateUi(ahoview);
 
