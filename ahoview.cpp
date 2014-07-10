@@ -174,7 +174,7 @@ void ahoview::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void ahoview::resizeEvent(QResizeEvent * event) {
+void ahoview::resizeEvent(QResizeEvent *) {
     plot();
 }
 

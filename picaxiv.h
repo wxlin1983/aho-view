@@ -29,6 +29,8 @@ public:
 private:
 
     std::vector<pic *>::iterator offset_it(int=0);
+    std::vector<pic *>::iterator offset_it_checked(int=0);
+    //return iterator point to a "good" pic.
     std::vector<pic *>::iterator pic_it;
 
 };

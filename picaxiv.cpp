@@ -40,7 +40,7 @@ picaxiv::~picaxiv() {
 }
 
 std::vector<pic *>::iterator picaxiv::offset_it(int offset) {
-    if (axiv.empty()) {return pic_it;}
+    if (axiv.empty()||(offset==0)) {return pic_it;}
     std::vector<pic *>::iterator tmp=pic_it;
     int k=1;
     if (offset<0) {k=-1;}
@@ -48,6 +48,32 @@ std::vector<pic *>::iterator picaxiv::offset_it(int offset) {
         if (offset<0&&tmp==axiv.begin()) {tmp=axiv.end();}
         tmp=tmp+k;
         if (offset>0&&tmp==axiv.end()) {tmp=axiv.begin();}
+    }
+    return tmp;
+}
+
+std::vector<pic *>::iterator picaxiv::offset_it_checked(int offset) {
+    //should only be used for showable axiv
+    if (axiv.empty()||(offset==0)) {return pic_it;}
+    std::vector<pic *>::iterator tmp=pic_it;
+    int k=1;
+    if (offset<0) {k=-1;}
+    for (int i=0;i<offset*k;i++) {
+        if (offset<0&&tmp==axiv.begin()) {tmp=axiv.end();}
+        tmp=tmp+k;
+        if (offset>0&&tmp==axiv.end()) {tmp=axiv.begin();}
+    }
+    while((*tmp)->load()!=1) {
+        tmp=axiv.erase(tmp);
+        if (axiv.empty()) {return tmp;}
+        //this should never happen!
+        //always check showable before using mv.
+        if (offset<0) {
+            if (tmp==axiv.begin()) {tmp=axiv.end();}
+            tmp--;
+        } else if (offset>0) {
+            if (tmp==axiv.end()) {tmp=axiv.begin();}
+        }
     }
     return tmp;
 }
@@ -77,26 +103,13 @@ int picaxiv::scale(int offset, QSize size, unsigned picRescaleMode) {
 }
 
 std::vector<pic *>::iterator picaxiv::ptr(int m) {
-    if (axiv.empty()) {
-        return pic_it;
-    }
+    if (axiv.empty()) {return pic_it;}
     return offset_it(m);
 }
 
 std::vector<pic *>::iterator picaxiv::mv(int m) {
-    if (axiv.empty()) {
-        return pic_it;
-    }
-    pic_it=offset_it(m);
-    if((*pic_it)->load()==1) {
-        return pic_it;
-    }
-    do {
-        pic_it=axiv.erase(pic_it);
-        if (axiv.empty()) {return pic_it;}
-        //this should never happen!
-        //always check showable before using mv.
-        if (pic_it==axiv.end()) {pic_it=axiv.begin();}
-    } while ((*pic_it)->load()!=1);
+    //always check showable before using mv.
+    if (axiv.empty()||(m==0)) {return pic_it;}
+    pic_it=offset_it_checked(m);
     return pic_it;
 }
