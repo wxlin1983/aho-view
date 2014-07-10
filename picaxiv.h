@@ -10,7 +10,7 @@ public:
     explicit picaxiv(QString=QString());
     ~picaxiv();
 
-    bool showable();
+    bool isvalid();
     int load(int);
     int scale(int, QSize, unsigned);
     //return 0 if scaled got updated, 1 if it's not updated

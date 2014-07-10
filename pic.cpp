@@ -9,7 +9,9 @@ pic::pic(QString fn) {
     status=0;
 }
 
-pic::~pic() {}
+pic::~pic() {
+
+}
 
 int pic::load() {
     //after load(), the status will be either 1 or 2.

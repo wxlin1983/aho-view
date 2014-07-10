@@ -78,7 +78,7 @@ std::vector<pic *>::iterator picaxiv::offset_it_checked(int offset) {
     return tmp;
 }
 
-bool picaxiv::showable() {
+bool picaxiv::isvalid() {
     if (status==2) {return false;}
     int ind=0;
     for(std::vector<pic*>::iterator i=axiv.begin();i!=axiv.end();i++) {

@@ -184,7 +184,6 @@ void ahoview::resizeEvent(QResizeEvent *) {
 
 void ahoview::plot() {
     if (allaxiv.empty()) {return;}
-    if (!(*axiv_it)->isvalid()) {return;}
     (*axiv_it)->scale(0,qimglabel->size(),picRescaleMode);
     if((*(*axiv_it)->ptr())->status!=2) {
         qimglabel->setPixmap((*(*axiv_it)->ptr())->scaled);
