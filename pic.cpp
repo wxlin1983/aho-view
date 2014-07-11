@@ -2,10 +2,10 @@
 #include <QPixmap>
 #include <QFileInfo>
 
-pic::pic(QString fn) {
-
-    name=fn;
-    status=0;
+pic::pic(QString fn) :
+    name(fn),
+    status(0)
+{
 
 }
 
