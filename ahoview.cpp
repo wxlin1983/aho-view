@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QKeyEvent>
 #include <QStatusBar>
+#include <QSettings>
 #include "zlib.h"
 //end my include
 
@@ -30,6 +31,10 @@ ahoview::ahoview(QWidget *parent) :
 
     qstatus=new QLabel(tr("initialized"));
     createStatusbar();
+
+    QSettings ahoset ("aho","ahov",this);
+    ahoset.setValue("rescalemode",picRescaleMode);
+    ahoset.setValue("windowsizemode",windowSizeMode);
 }
 
 ahoview::~ahoview() {

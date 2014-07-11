@@ -2,12 +2,10 @@
 #include <QDir>
 #include <QStringList>
 
-picaxiv::picaxiv(QString fn)
+picaxiv::picaxiv(QString fn):name(fn), status(0)
 {
     QStringList picfilters;
     picfilters << "*.jpg" << "*.jpeg" << "*.png"<< "*.bmp";
-    name=fn;
-    status=0;
     QFileInfo info(fn);
     if (info.exists()) {
         if (info.isDir()) {
