@@ -16,14 +16,29 @@ picaxiv::picaxiv(QString fn)
             axiv=std::vector<pic *> (dirlist.size());
             unsigned j=0;
             for (QFileInfoList::iterator i = dirlist.begin(); i != dirlist.end(); ++i) {
-                axiv[j]=new pic((*i).absoluteFilePath());
+                try {
+                    axiv[j]=new pic((*i).absoluteFilePath());
+                } catch (std::bad_alloc&) {
+                    if (j==0) {
+                        name="";
+                        status=2;
+                    } else {
+                        axiv.resize(j);
+                    }
+                    return;
+                }
                 j++;
             }
             pic_it=axiv.begin();
             return;
         } else if (info.isFile()) {
             axiv=std::vector<pic *> (1);
-            axiv[0]=new pic(info.absoluteFilePath());
+            try {
+                axiv[0]=new pic(info.absoluteFilePath());
+            } catch (std::bad_alloc&) {
+                axiv[0]=nullptr;
+                return;
+            }
             pic_it=axiv.begin();
             return;
         } else {}
@@ -80,6 +95,7 @@ std::vector<pic *>::iterator picaxiv::offset_it_checked(int offset) {
 
 bool picaxiv::isvalid() {
     if (status==2) {return false;}
+    status=2;
     int ind=0;
     for(std::vector<pic*>::iterator i=axiv.begin();i!=axiv.end();i++) {
         if((*i)->load()==1) {
@@ -98,8 +114,27 @@ int picaxiv::load(int offset) {
     return (*offset_it(offset))->load();
 }
 
+int picaxiv::unload(std::vector<pic *>::iterator it) {
+    //you must ensure "it" is within the range.
+    if (axiv.size()<2) {return 1;}
+    if (it==pic_it) {return 1;}
+    //don't unload the current pic.
+    if ((*it)->status==1) {
+        pic * tmp=nullptr;
+        try {
+            tmp=new pic((*it)->name);
+        } catch (std::bad_alloc&) {
+            return 1;
+        }
+        tmp->status=1;
+        delete (*it);
+        (*it)=tmp;
+    }
+    return 0;
+}
+
 int picaxiv::scale(int offset, QSize size, unsigned picRescaleMode) {
-    return (*offset_it(offset))->scale(size, picRescaleMode);
+    return (*offset_it_checked(offset))->scale(size, picRescaleMode);
 }
 
 std::vector<pic *>::iterator picaxiv::ptr(int m) {

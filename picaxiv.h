@@ -11,7 +11,12 @@ public:
     ~picaxiv();
 
     bool isvalid();
+
     int load(int);
+    int unload(std::vector<pic *>::iterator);
+    //release the memory of qpixmap (original and scaled) of what is pointed at by the iterator if the iterator is not pic_it.
+    //this is done by copying the name and status of the pic, creating a new one, and then deleting the old one.
+
     int scale(int, QSize, unsigned);
     //return 0 if scaled got updated, 1 if it's not updated
 
@@ -30,7 +35,8 @@ private:
 
     std::vector<pic *>::iterator offset_it(int=0);
     std::vector<pic *>::iterator offset_it_checked(int=0);
-    //return iterator point to a "good" pic.
+    //return iterator pointing to a "good" pic.
+    //this will load the picture.
     std::vector<pic *>::iterator pic_it;
 
 };

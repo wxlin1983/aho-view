@@ -2,22 +2,19 @@
 #include <QPixmap>
 #include <QFileInfo>
 
-#include "zlib.h"
-
 pic::pic(QString fn) {
+
     name=fn;
     status=0;
-}
-
-pic::~pic() {
 
 }
+
+pic::~pic() {}
 
 int pic::load() {
     //after load(), the status will be either 1 or 2.
     //return updated status.
-    if (status==1) {return 1;}
-    if (status==0) {
+    if (status==0||((status==1)&&original.isNull())) {
         status=2;
         QFileInfo fn(name);
         if (fn.exists()&&fn.isFile()) {
@@ -33,19 +30,9 @@ int pic::load() {
     return status;
 }
 
-//int pic::cpress() {
-//    unsigned char buf[1024]={0},strDst[1024]={0};
-//    unsigned long srcLen=sizeof(strSrc),bufLen=sizeof(buf),dstLen=sizeof(strDst);
-
-//    compress(buf,&bufLen,strSrc,srcLen);
-//    //解压缩
-//    uncompress(strDst,&dstLen,buf,bufLen);
-//}
-
 int pic::scale(QSize size, unsigned picRescaleMode) {
     //return 0 if scaled got updated, 1 if it's not updated
-    if (status==0) {load();}
-    if (status==1) {
+    if (load()==1) {
         switch (picRescaleMode) {
         case 0: {
             if (double(size.height())/double(size.width())>=double(original.height())/double(original.width())) {

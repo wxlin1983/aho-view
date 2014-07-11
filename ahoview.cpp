@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QKeyEvent>
 #include <QStatusBar>
+#include "zlib.h"
 //end my include
 
 ahoview::ahoview(QWidget *parent) :
@@ -184,12 +185,26 @@ void ahoview::resizeEvent(QResizeEvent *) {
 
 void ahoview::plot() {
     if (allaxiv.empty()) {return;}
-    if (!(*axiv_it)->isvalid()) {return;}
+    //test unload
+    std::vector<pic *>::iterator it;
+    //it=(*axiv_it)->ptr(-2);
+    //if (it!=(*axiv_it)->ptr(0)) {
+//        (*axiv_it)->unload(it);
+//    }
+    //it=(*axiv_it)->ptr(2);
+    //if (it!=(*axiv_it)->ptr(0)) {
+//        (*axiv_it)->unload(it);
+  //  }
+    //test end
+//    (*axiv_it)->load(1);
+//    (*axiv_it)->load(-1);
     (*axiv_it)->scale(0,qimglabel->size(),picRescaleMode);
     if((*(*axiv_it)->ptr())->status!=2) {
         qimglabel->setPixmap((*(*axiv_it)->ptr())->scaled);
         changeStatusbar((*((*axiv_it)->ptr()))->name);
     }
+    (*axiv_it)->scale(1,qimglabel->size(),picRescaleMode);
+    (*axiv_it)->scale(-1,qimglabel->size(),picRescaleMode);
 }
 
 void ahoview::clearplot() {
@@ -245,3 +260,12 @@ void ahoview::changeStatusbar(QString newstatus) {
 //        QMessageBox msgBox;
 //        msgBox.setText("The document has been +1.");
 //        msgBox.exec();
+
+//int pic::cpress() {
+//    unsigned char buf[1024]={0},strDst[1024]={0};
+//    unsigned long srcLen=sizeof(strSrc),bufLen=sizeof(buf),dstLen=sizeof(strDst);
+
+//    compress(buf,&bufLen,strSrc,srcLen);
+//    //解压缩
+//    uncompress(strDst,&dstLen,buf,bufLen);
+//}
