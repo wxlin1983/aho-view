@@ -13,5 +13,5 @@ a simple qt-based picture viewer designed be not annoying.
 |PageUp/PageDown|skip 9 images (forward/backward)|
 |g|shuffle window size between current/maximum/fullscreen|
 
-## to do list:
-to read compressed file.
+## to do:
+add support for compressed files.
