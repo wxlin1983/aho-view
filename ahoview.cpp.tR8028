@@ -128,17 +128,17 @@ void ahoview::closefiledir() {
     closeaxiv(0);
 }
 
-//void ahoview::openfile() {
-//    QString fn = QFileDialog::getOpenFileName(this, tr("Open a file"), QDir::homePath());
-//    if (!fn.isEmpty()) {
-//        picaxiv* picfolderptrtmp=new picaxiv(QFileInfo(fn).absoluteFilePath());
-//        if (picfolderptrtmp->showable()) {
-//            allaxiv.push_front(picfolderptrtmp);
-//            axiv_it=allaxiv.begin();
-//            plot();
-//        } else {delete picfolderptrtmp;}
-//    }
-//}
+void ahoview::openfile() {
+    QString fn = QFileDialog::getOpenFileName(this, tr("Open a file"), QDir::homePath());
+    if (!fn.isEmpty()) {
+        picaxiv* picfolderptrtmp=new picaxiv(QFileInfo(fn).absoluteFilePath());
+        if (picfolderptrtmp->showable()) {
+            allaxiv.push_front(picfolderptrtmp);
+            axiv_it=allaxiv.begin();
+            plot();
+        } else {delete picfolderptrtmp;}
+    }
+}
 
 void ahoview::opendir() {
     QString dir = QFileDialog::getExistingDirectory(this,
@@ -250,7 +250,6 @@ void ahoview::togglefullscreen() {
 
 void ahoview::createMenus() {
     fileMenu = new QMenu(tr("&File"), this);
-//    fileMenu->addAction(openfileAct);
     fileMenu->addAction(opendirAct);
     fileMenu->addAction(closeAct);
     fileMenu->addSeparator();
@@ -260,9 +259,9 @@ void ahoview::createMenus() {
 }
 
 void ahoview::createActions() {
-//    openfileAct = new QAction(tr("Open &File..."), this);
-//    openfileAct->setShortcut(tr("Ctrl+O"));
-//    connect(openfileAct, SIGNAL(triggered()), this, SLOT(openfile()));
+    openfileAct = new QAction(tr("Open &File..."), this);
+    openfileAct->setShortcut(tr("Ctrl+O"));
+    connect(openfileAct, SIGNAL(triggered()), this, SLOT(openfile()));
 
     opendirAct = new QAction(tr("Open &Directory..."), this);
     opendirAct->setShortcut(tr("Ctrl+D"));

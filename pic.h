@@ -10,22 +10,33 @@ public:
     explicit pic(QString=QString());
     ~pic();
 
-    int load();
-    //after load(), the status will be either 1 or 2.
-    //return updated status.
+    bool showable();
+    //return true if the pic is showable.
+    //it causes the program to load the pic unless it has been unloaded before.
 
-    int scale(QSize, unsigned);
-    //return 0 if scaled got updated, 1 if it's not updated.
+    bool load(); //try to load image, return true if the file is loaded.
+    bool unload(); //try to unload image, return true if the file is unloaded.
+
+    bool scale(QSize, unsigned);
+    bool deleteme();
 
     QString name;
-    int status;
-    //0: unknown, 1: is a picture, 2: not a picture.
-    //there's no guarantee that original will be loaded when status is 1!
-    QPixmap scaled;
+
+    double score_add(double);
+    double score_set(double);
+
+    bool isLoaded;
+
+    QPixmap * scaled;
 
 private:
 
-    QPixmap original;
+    double score;
+
+    bool isChecked;
+    bool isShowable;
+
+    QPixmap * original;
 
 };
 

@@ -9,11 +9,12 @@
 #include <QScrollArea>
 #include <QGraphicsView>
 #include <QDir>
+#include <set>
 
 namespace Ui {
 class ahoview;
-class pic;
-class picaxiv;
+class pic2;
+class picaxiv2;
 }
 
 class ahoview : public QMainWindow
@@ -27,30 +28,29 @@ public:
 
 private slots:
 
-    void openfile();
+    //void openfile();
     void opendir();
     void closefiledir();
 
 private:
 
-    std::vector<picaxiv *> allaxiv;
+    std::list<picaxiv *> allaxiv;
 
-    std::vector<picaxiv *>::iterator offset_it(int=0);
-    std::vector<picaxiv *>::iterator axiv_it;
+    std::list<picaxiv *>::iterator offset_it(int=0);
+    std::list<picaxiv *>::iterator axiv_it;
     //always need to check whether allaxiv is empty before dereference axiv_it.
+    std::list<pic *>::iterator offsetboth(int, int);
+
+    void updatemc();
 
     void plot();
-    void clearplot();
+    void toggleplot();
+    void togglefullscreen();
     int changeaxiv(int);
-    //return 0 if currentaxiv is changed.
     int closeaxiv(int);
-
+    //return 0 if currentaxiv is changed.
     void createActions();
     void createMenus();
-    void createStatusbar();
-    //use qstatus
-    void changeStatusbar(QString);
-    //change qstatus
 
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
@@ -60,16 +60,13 @@ private:
 
     Ui::ahoview *ui;
     QLabel *qimglabel;
-    QLabel *qstatus;
 
-    QAction *openfileAct;
+    //QAction *openfileAct;
     QAction *opendirAct;
     QAction *closeAct;
     QAction *exitAct;
-    QAction *aboutQtAct;
 
     QMenu *fileMenu;
-    QMenu *helpMenu;
 
 };
 
