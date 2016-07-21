@@ -1,5 +1,5 @@
 # ahoview
-a simple qt-based picture viewer designed be not annoying.
+a simple qt-based picture viewer designed to be not annoying.
 ## control:
 
 |key|action|
