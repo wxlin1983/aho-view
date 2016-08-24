@@ -28,7 +28,6 @@ public:
 
 private slots:
 
-    //void openfile();
     void opendir();
     void closefiledir();
 
@@ -49,12 +48,17 @@ private:
     int changeaxiv(int);
     int closeaxiv(int);
     //return 0 if currentaxiv is changed.
+    int openaxiv(QString);
+    //return 0 if an axiv is opened.
+
     void createActions();
     void createMenus();
 
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+    void dragEnterEvent(QDragEnterEvent *);
+    void dropEvent(QDropEvent *);
 
     unsigned picRescaleMode;
     unsigned windowSizeMode;
