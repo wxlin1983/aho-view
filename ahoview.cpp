@@ -8,6 +8,7 @@
 #include <QStringList>
 #include <QKeyEvent>
 #include <QDesktopWidget>
+#include <QMimeData>
 //end my include
 
 ahoview::ahoview(QWidget *parent) :
@@ -29,6 +30,9 @@ ahoview::ahoview(QWidget *parent) :
     createMenus();
 
     setWindowTitle("The AHO Viewer");
+
+    setAcceptDrops(true);
+
 }
 
 void ahoview::updatemc() {
@@ -124,26 +128,12 @@ int ahoview::closeaxiv(int offset) {
     return 1;
 }
 
-void ahoview::closefiledir() {
-    closeaxiv(0);
-}
-
-//void ahoview::openfile() {
-//    QString fn = QFileDialog::getOpenFileName(this, tr("Open a file"), QDir::homePath());
-//    if (!fn.isEmpty()) {
-//        picaxiv* picfolderptrtmp=new picaxiv(QFileInfo(fn).absoluteFilePath());
-//        if (picfolderptrtmp->showable()) {
-//            allaxiv.push_front(picfolderptrtmp);
-//            axiv_it=allaxiv.begin();
-//            plot();
-//        } else {delete picfolderptrtmp;}
-//    }
-//}
-
-void ahoview::opendir() {
-    QString dir = QFileDialog::getExistingDirectory(this,
-                                                    tr("Open a folder"), QDir::homePath(),
-                                                    QFileDialog::ShowDirsOnly);
+int ahoview::openaxiv(QString dir) {
+    if (!QFileInfo(dir).exists()) {
+        dir = QFileDialog::getExistingDirectory(this,
+                                                tr("Open a folder"), QDir::homePath(),
+                                                QFileDialog::ShowDirsOnly);
+    }
     if (!dir.isEmpty()) {
         picaxiv* picfolderptrtmp=new picaxiv(QFileInfo(dir).absoluteFilePath());
         if (picfolderptrtmp->showable()) {
@@ -151,7 +141,17 @@ void ahoview::opendir() {
             axiv_it=allaxiv.begin();
             plot();
         } else {delete picfolderptrtmp;}
+        return 0;
     }
+    return 1;
+}
+
+void ahoview::closefiledir() {
+    closeaxiv(0);
+}
+
+void ahoview::opendir() {
+    openaxiv("");
 }
 
 void ahoview::keyPressEvent(QKeyEvent *event) {
@@ -241,6 +241,25 @@ void ahoview::mouseReleaseEvent ( QMouseEvent * event ) {
     }
 }
 
+void ahoview::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->accept();
+}
+
+void ahoview::dropEvent(QDropEvent* event)
+{
+    const QMimeData* mimeData = event->mimeData();
+    QString dirtmp;
+    if (mimeData->hasUrls()) {
+        QList<QUrl> urlList = mimeData->urls();
+        for (int i = 0; i < urlList.size() && i < 32; ++i)
+        {
+            dirtmp=urlList.at(i).toLocalFile();
+            openaxiv(dirtmp);
+        }
+    }
+}
+
 void ahoview::resizeEvent(QResizeEvent *) {
     plot();
 }
@@ -280,9 +299,6 @@ void ahoview::createMenus() {
 }
 
 void ahoview::createActions() {
-    //    openfileAct = new QAction(tr("Open &File..."), this);
-    //    openfileAct->setShortcut(tr("Ctrl+O"));
-    //    connect(openfileAct, SIGNAL(triggered()), this, SLOT(openfile()));
 
     opendirAct = new QAction(tr("Open &Directory..."), this);
     opendirAct->setShortcut(tr("Ctrl+D"));
