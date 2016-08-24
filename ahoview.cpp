@@ -221,6 +221,26 @@ void ahoview::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+void ahoview::mouseReleaseEvent ( QMouseEvent * event ) {
+
+    if(event->button() == Qt::LeftButton)
+    {
+        if (allaxiv.empty()) {return;}
+        std::list<pic *>::iterator tmp=offsetboth(0,0);
+        if (tmp!=(*axiv_it)->mv(1)) {
+            plot();
+        }
+    } else if (event->button() == Qt::RightButton){
+        if (allaxiv.empty()) {return;}
+        std::list<pic *>::iterator tmp=offsetboth(0,0);
+        if (tmp!=(*axiv_it)->mv(-1)) {
+            plot();
+        }
+    } else {
+        QWidget::mouseReleaseEvent(event);
+    }
+}
+
 void ahoview::resizeEvent(QResizeEvent *) {
     plot();
 }
@@ -250,7 +270,7 @@ void ahoview::togglefullscreen() {
 
 void ahoview::createMenus() {
     fileMenu = new QMenu(tr("&File"), this);
-//    fileMenu->addAction(openfileAct);
+    //    fileMenu->addAction(openfileAct);
     fileMenu->addAction(opendirAct);
     fileMenu->addAction(closeAct);
     fileMenu->addSeparator();
@@ -260,9 +280,9 @@ void ahoview::createMenus() {
 }
 
 void ahoview::createActions() {
-//    openfileAct = new QAction(tr("Open &File..."), this);
-//    openfileAct->setShortcut(tr("Ctrl+O"));
-//    connect(openfileAct, SIGNAL(triggered()), this, SLOT(openfile()));
+    //    openfileAct = new QAction(tr("Open &File..."), this);
+    //    openfileAct->setShortcut(tr("Ctrl+O"));
+    //    connect(openfileAct, SIGNAL(triggered()), this, SLOT(openfile()));
 
     opendirAct = new QAction(tr("Open &Directory..."), this);
     opendirAct->setShortcut(tr("Ctrl+D"));
