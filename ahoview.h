@@ -54,6 +54,7 @@ private:
 
     void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
 
     unsigned picRescaleMode;
     unsigned windowSizeMode;
